@@ -1,5 +1,5 @@
-from ynab_defs import Transaction, YnabTransaction
-import ynab_conversions
+from transactions import Transaction, YnabTransaction
+import conversions
 
 import requests
 
@@ -127,7 +127,7 @@ class TransactionsEndpoint(Endpoint):
 
         return self._post(
             data=json.dumps(
-                {"transactions": ynab_conversions.to_ynab(account_id, transactions)}
+                {"transactions": conversions.to_ynab(account_id, transactions)}
             ),
             budget_id=self.ynab._budget.id,
             account_id=None,

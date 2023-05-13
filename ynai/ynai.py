@@ -1,5 +1,5 @@
 from ynab_api import YnabApi
-from ynab_defs import VenmoTransaction, Transaction
+from transactions import VenmoTransaction, Transaction
 
 from abc import ABC, abstractmethod
 import argparse

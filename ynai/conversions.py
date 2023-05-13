@@ -1,4 +1,4 @@
-from ynab_defs import Transaction
+from transactions import Transaction
 
 import dataclasses
 
