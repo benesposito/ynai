@@ -1,0 +1,6 @@
+# private files
+secrets/
+
+# build files
+env/
+__pycache__
