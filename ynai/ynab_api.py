@@ -1,5 +1,4 @@
 from transactions import Transaction, YnabTransaction
-import conversions
 
 import requests
 
@@ -7,6 +6,7 @@ from abc import ABC, abstractmethod
 import dataclasses
 import logging
 import json
+from typing import Any
 
 
 @dataclasses.dataclass
@@ -123,15 +123,23 @@ class TransactionsEndpoint(Endpoint):
         if not transactions:
             raise RuntimeError("No transactions to upload")
 
-        account_id = self.ynab.resolve_account(account_name)
+        ynab_transactions = [self.to_ynab(account_name, t) for t in transactions]
 
         return self._post(
-            data=json.dumps(
-                {"transactions": conversions.to_ynab(account_id, transactions)}
-            ),
+            data=json.dumps({"transactions": ynab_transactions}),
             budget_id=self.ynab._budget.id,
             account_id=None,
         )
+
+    def to_ynab(self, account_name: str, transaction: Transaction) -> dict[str, Any]:
+        account_id = self.ynab.resolve_account(account_name)
+
+        return {
+            "date": transaction.date.strftime("%Y-%m-%d"),
+            "account_id": account_id,
+            "payee_name": transaction.payee,
+            "amount": transaction.amount * 10,
+        }
 
 
 class YnabApi:
