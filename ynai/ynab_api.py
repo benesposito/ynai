@@ -135,9 +135,10 @@ class TransactionsEndpoint(Endpoint):
         account_id = self.ynab.resolve_account(account_name)
 
         return {
-            "date": transaction.date.strftime("%Y-%m-%d"),
             "account_id": account_id,
+            "date": transaction.date.strftime("%Y-%m-%d"),
             "payee_name": transaction.payee,
+            "memo": transaction.memo,
             "amount": transaction.amount * 10,
         }
 
